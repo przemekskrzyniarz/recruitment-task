@@ -16,9 +16,17 @@ const investorDetailsUrl = computed(() => {
 })
 </script>
 <template>
-  <div class="border rounded-lg bg-blue-50 border-blue-100 p-4">
-    <h3 class="text-base font-semibold">
-      <router-link :to="investorDetailsUrl"> {{ investor.name }}</router-link>
-    </h3>
-  </div>
+  <router-link :to="investorDetailsUrl">
+    <div class="border rounded-lg bg-blue-50 border-blue-100 p-4">
+      <h3 class="text-base font-semibold flex gap-4">
+        <span>{{ investor.name }}</span>
+        <template v-for="sector in investor.sectors">
+          <span>{{ sector.name }}</span>
+        </template>
+        <template v-for="stage in investor.stages"
+          ><span>{{ stage.name }}</span></template
+        >
+      </h3>
+    </div>
+  </router-link>
 </template>
