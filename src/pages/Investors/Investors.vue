@@ -6,6 +6,7 @@ import Pagination from '@/components/common/Pagination/Pagination.vue'
 import { InvestorDTO } from '@/api/investors.types'
 import { reactive, computed } from 'vue'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
+import { sortArrayByPropertyWithoutNumbers } from '@/utils/sort'
 
 const store = useInvestorsStore()
 store.fetch()
@@ -14,8 +15,10 @@ const filters = reactive({
   search: '',
 })
 
+const sortedInvestors = computed(() => sortArrayByPropertyWithoutNumbers(store.investors, 'name'))
+
 const filteredInvestors = computed(() => {
-  return store.investors.filter((investor) => {
+  return sortedInvestors.value.filter((investor) => {
     if (filters.search) {
       return (
         investor.name
