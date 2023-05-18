@@ -6,7 +6,8 @@ import Pagination from '@/components/common/Pagination/Pagination.vue'
 import { InvestorDTO } from '@/api/investors.types'
 import { reactive, computed } from 'vue'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
-import { sortArrayByPropertyWithoutNumbers } from '@/utils/sort'
+import { sortArrayByPropertyWithoutNumbers } from '@/utils/sorts'
+import { filterByKeys } from '@/utils/filters'
 
 const store = useInvestorsStore()
 
@@ -14,23 +15,19 @@ const filters = reactive({
   search: '',
 })
 
-const sortedInvestors = computed(() => sortArrayByPropertyWithoutNumbers(store.investors, 'name'))
+const sortedInvestors = computed(() =>
+  sortArrayByPropertyWithoutNumbers(filteredInvestors.value, 'name')
+)
 
 const filteredInvestors = computed(() => {
-  return sortedInvestors.value.filter((investor) => {
-    if (filters.search) {
-      return (
-        investor.name
-          .toLocaleLowerCase()
-          .indexOf(filters.search.toLocaleLowerCase()) >= 0
-      )
-    }
-    return true
-  })
+  return filterByKeys(store.investors, filters.search, [
+    'name',
+    ['stages', 'name'],
+  ])
 })
 
 const pageSize = 10
-const { pageObjects, setPage } = usePaginate<InvestorDTO>(filteredInvestors, {
+const { pageObjects, setPage } = usePaginate<InvestorDTO>(sortedInvestors, {
   pageSize,
 })
 </script>
@@ -48,6 +45,7 @@ const { pageObjects, setPage } = usePaginate<InvestorDTO>(filteredInvestors, {
         />
         <input
           class="border rounded-lg bg-blue-50 p-2 pl-10 text-gray-500"
+          placeholder="Type name"
           v-model="filters.search"
         />
       </div>
@@ -56,7 +54,7 @@ const { pageObjects, setPage } = usePaginate<InvestorDTO>(filteredInvestors, {
       <InvestorItem :investor="investor" />
     </div>
     <Pagination
-      :total="filteredInvestors.length"
+      :total="sortedInvestors.length"
       :pageSize="pageSize"
       @change="setPage"
     />

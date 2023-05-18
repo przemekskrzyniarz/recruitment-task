@@ -2,7 +2,7 @@ export const sortArrayByPropertyWithoutNumbers = (
   array: any[],
   key: string
 ) => {
-  return array.sort((a, b) => {
+  return array?.sort((a, b) => {
     const key1 = a[key]
       .toLowerCase()
       .replace(/[^a-zA-Z ]/g, '')

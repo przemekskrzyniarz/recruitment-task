@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getApiUrl } from '@/api'
 import { useInvestorsStore } from '@/stores/investorsStore'
-import { sortArrayByOrderArray } from '@/utils/sort'
+import { sortArrayByOrderArray } from '@/utils/sorts'
 import { computed } from 'vue'
 const props = defineProps({
   investorId: {
