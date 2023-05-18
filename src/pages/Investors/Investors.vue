@@ -9,7 +9,6 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
 import { sortArrayByPropertyWithoutNumbers } from '@/utils/sort'
 
 const store = useInvestorsStore()
-store.fetch()
 
 const filters = reactive({
   search: '',

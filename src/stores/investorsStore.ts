@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { InvestorDTO } from '@/api/investors.types'
 import { defineStore } from 'pinia'
 import { fetchInvestors } from '@/api'
@@ -16,6 +16,10 @@ export const useInvestorsStore = defineStore('investors', () => {
   const getById = (investorId: number) => {
     return investors.value.filter((i) => i.id === investorId)[0]
   }
+
+  onMounted(async () => {
+    await fetch()
+  })
 
   return {
     investors,
