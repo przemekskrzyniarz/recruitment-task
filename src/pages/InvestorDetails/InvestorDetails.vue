@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getApiUrl } from '@/api'
 import { useInvestorsStore } from '@/stores/investorsStore'
+import { sortArrayByOrderArray } from '@/utils/sort'
 import { computed } from 'vue'
 const props = defineProps({
   investorId: {
@@ -12,6 +13,8 @@ const props = defineProps({
 const store = useInvestorsStore()
 const investorId = parseInt(props.investorId, 10)
 const investor = computed(() => store.getById(investorId))
+
+const orderBy = ['Pre-seed', 'Seed', 'Late seed', 'Early Growth', 'Growth', 'Maturity']
 
 const imgSrc = computed(() => {
   return getApiUrl(investor.value.logo.url)
@@ -47,7 +50,7 @@ const imgSrc = computed(() => {
         <div class="my-4">
           <h4 class="text-gray-800">Stages</h4>
           <ul class="pl-1">
-            <li v-for="stage in investor.stages" :key="stage.id">
+            <li v-for="stage in sortArrayByOrderArray(investor.stages, orderBy, 'name')" :key="stage.id">
               <span class="text-gray-400"> - {{ stage.name }} </span>
             </li>
           </ul>
